@@ -54,11 +54,11 @@ export default function App() {
       </div>
       <svg width="800" height="500" xmlns="http://www.w3.org/2000/svg" style={{backgroundColor:"white"}}>
 
-      <rect x={0} y={200} width={800} height={80} style={{fill: "darkgray"}}></rect>
+      <rect x={0} y={200} width={800} height={80} style={{fill: "darkgray"}} key ="carretera"></rect>
       {/* <image x={0} y={240} href="./racing-car.png"/> */}
       {
         cars.map(car =>
-          <image id={car.id} x={car.pos[0]*32} y={240} width={32} href="./racing-car.png"/>
+          <image id={car.id} x={car.pos[0]*32} y={240} width={32} href="./racing-car.png" key={'carro${car.id}'}/>
         )
       }
       </svg>
