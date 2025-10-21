@@ -28,7 +28,11 @@ route("/simulations/:id") do
     run!(model, 1)
     cars = []
     for car in allagents(model)
-        push!(cars, car)
+        push!(cars, Dict(
+            "id" => car.id,
+            "pos" => car.pos,
+            "vel" => car.vel
+        ))
     end
     
     json(Dict("cars" => cars))
