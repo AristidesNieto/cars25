@@ -13,6 +13,9 @@ route("/simulations", method = POST) do
 
     cars = []
     for car in allagents(model)
+        if car.id == 1
+            println("Carro Id 1 con posicion: $(car.pos)")
+        end
         push!(cars, car)
     end
     
