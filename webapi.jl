@@ -6,52 +6,72 @@ instances = Dict()
 
 route("/simulations", method = POST) do
     payload = jsonpayload()
+    num_cars = get(payload, "num_cars", 1)
 
-    model = initialize_model()
+    model = initialize_model((25, 25), num_cars)
     id = string(uuid1())
     instances[id] = model
 
     lights = []
-    for light in allagents(model)
-        light_data = Dict(
-            "id" => light.id,
-            "pos" => light.pos,
-            "color" => string(light.color),
-            "orientation" => string(light.orientation)
-        )
-        println("Light data: ", light_data)
-        push!(lights, light_data)
+    cars = []
+    
+    for agent in allagents(model)
+        if agent isa TrafficLight
+            light_data = Dict(
+                "id" => agent.id,
+                "pos" => agent.pos,
+                "color" => string(agent.color),
+                "orientation" => string(agent.orientation)
+            )
+            push!(lights, light_data)
+        elseif agent isa Car
+            car_data = Dict(
+                "id" => agent.id,
+                "pos" => agent.pos,
+                "vel" => agent.vel
+            )
+            push!(cars, car_data)
+        end
     end
     
-    response = Dict("Location" => "/simulations/$id", "lights" => lights)
-    println("Sending response: ", response)
+    response = Dict(
+        "Location" => "/simulations/$id",
+        "lights" => lights,
+        "cars" => cars
+    )
     json(response)
 end
 
 route("/simulations/:id") do
     id = payload(:id)
-    println("Received GET request for simulation: ", id)
-    
     model = instances[id]
     run!(model, 1)
     
     lights = []
-    for light in allagents(model)
-        light_data = Dict(
-            "id" => light.id,
-            "pos" => light.pos,
-            "color" => string(light.color),
-            "orientation" => string(light.orientation)
-        )
-        println("Updated light data: ", light_data)
-        push!(lights, light_data)
+    cars = []
+    
+    for agent in allagents(model)
+        if agent isa TrafficLight
+            light_data = Dict(
+                "id" => agent.id,
+                "pos" => agent.pos,
+                "color" => string(agent.color),
+                "orientation" => string(agent.orientation)
+            )
+            push!(lights, light_data)
+        elseif agent isa Car
+            car_data = Dict(
+                "id" => agent.id,
+                "pos" => agent.pos,
+                "vel" => agent.vel
+            )
+            push!(cars, car_data)
+        end
     end
     
-    response = Dict("lights" => lights)
-    println("Sending update response: ", response)
+    response = Dict("lights" => lights, "cars" => cars)
     json(response)
 end
-
 
 Genie.config.run_as_server = true
 Genie.config.cors_headers["Access-Control-Allow-Origin"] = "*"
