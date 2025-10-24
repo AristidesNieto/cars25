@@ -1,10 +1,20 @@
 ## Autores
 Luis Fernando Cruz Flores
+
 Aristides Nieto Guzman 
 
 Proyecto desarrollado para el curso de Sistemas Multi-Agentes
 
 ---
+
+## Reflexiones Individuales
+Luis Fernando: 
+Durante el desarrollo de este proyecto aprendí a integrar Agents.jl con un frontend en React, lo que me permitió comprender mejor cómo conectar un modelo de simulación con una interfaz visual en tiempo real. Este proceso me ayudó a reforzar mi conocimiento sobre sistemas multiagentes, aprendí a implementar la sincronización de semáforos, la detección de vecinos y lo más complicado, aprendí a modelar el comportamiento de agentes entre si mediante el diseño de un scheduler personalizado para coordinar las interacciones dentro del entorno.
+También entendí la importancia de equilibrar la precisión del modelo con la eficiencia computacional, ya que fue necesario simplificar aspectos como la física del vehículo y la detección basada en umbrales para mantener un desempeño estable. Trabajar con un escenario limitado a una intersección bidireccional me permitió enfocarme en la lógica de control antes de escalar hacia casos más complejos.
+
+Considero que hay aspectos que se podría mejorar para lograr intersecciones más realistas, por ejemplo, incorporar control adaptativo de semáforos (por ejemplo, con aprendizaje por refuerzo), diversificar el tipo de vehículos y aplicar optimizaciones de rendimiento.
+En general, este proyecto me permitió consolidar habilidades tanto técnicas como de diseño de sistemas, y representa una base sólida para el desarrollo de proyectos futuros como el proyecto Integrador, donde fusionaremos las simulaciones de Julia con un ambiente grafico en OpenGL
+
 
 # Simulación de Tráfico con Semáforos
 
