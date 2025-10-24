@@ -8,7 +8,7 @@ Proyecto desarrollado para el curso de Sistemas Multi-Agentes
 ---
 
 ## Reflexiones Individuales
-Luis Fernando: 
+**Luis Fernando:** 
 Durante el desarrollo de este proyecto aprendí a integrar Agents.jl con un frontend en React, lo que me permitió comprender mejor cómo conectar un modelo de simulación con una interfaz visual en tiempo real. Este proceso me ayudó a reforzar mi conocimiento sobre sistemas multiagentes, aprendí a implementar la sincronización de semáforos, la detección de vecinos y lo más complicado, aprendí a modelar el comportamiento de agentes entre si mediante el diseño de un scheduler personalizado para coordinar las interacciones dentro del entorno.
 También entendí la importancia de equilibrar la precisión del modelo con la eficiencia computacional, ya que fue necesario simplificar aspectos como la física del vehículo y la detección basada en umbrales para mantener un desempeño estable. Trabajar con un escenario limitado a una intersección bidireccional me permitió enfocarme en la lógica de control antes de escalar hacia casos más complejos.
 
@@ -16,25 +16,15 @@ Considero que hay aspectos que se podría mejorar para lograr intersecciones má
 En general, este proyecto me permitió consolidar habilidades tanto técnicas como de diseño de sistemas, y representa una base sólida para el desarrollo de proyectos futuros como el proyecto Integrador, donde fusionaremos las simulaciones de Julia con un ambiente grafico en OpenGL
 
 
+**Aristides Nieto**
+Este proyecto me permitio pulir la idea de como ciertas simulaciones pueden ir escalando poco a poco mientras agregamos mas situaciones de la vida real, este pensamiento se viene puliendo desde entregas anterioes, uno de los mayores desafios fue la sincronizacion y los estados de los semaforos, ya que el correcto manejo de estos dictaria el comportamiento de los carros.
+
+Este proyecto creo podria ser todavia mas interesante si agregamos mas situaciones, quizas peatones, vueltas a la derecha o izquierda, en fin cualquier tipo de simulacion es facilmente escalable, pero creo es una buena forma de sentar las bases de lo que son las simulaciones con multiagentes.
+
 # Simulación de Tráfico con Semáforos
 
 Sistema de simulación multi-agente que modela el comportamiento del tráfico vehicular en una intersección controlada por semáforos, implementado con Julia (Agents.jl) en el backend y React en el frontend.
 
-## Descripción del Proyecto
-
-Este proyecto simula el flujo de tráfico en una intersección con dos semáforos sincronizados (horizontal y vertical). Los vehículos deben obedecer las señales de tráfico, detectar otros vehículos y ajustar su velocidad en consecuencia. El sistema incluye monitoreo en tiempo real de la velocidad promedio para análisis del comportamiento del tráfico.
-
-## Arquitectura del Sistema
-
-### Backend (Julia)
-- **Framework**: Agents.jl para simulación basada en agentes
-- **API**: Genie.jl para servidor HTTP RESTful
-- **Espacio**: ContinuousSpace 2D (25x25 unidades)
-
-### Frontend (React)
-- **Visualización**: SVG para renderizado de simulación
-- **Gráficas**: Plotly.js para monitoreo de velocidad
-- **Comunicación**: Fetch API para conexión con backend
 
 ---
 
@@ -310,61 +300,6 @@ end
 
 ---
 
-## API REST (webapi.jl)
-
-### Endpoints
-
-#### POST /simulations
-Crea una nueva simulación
-
-**Request:**
-```json
-{
-  "num_cars": 5
-}
-```
-
-**Response:**
-```json
-{
-  "Location": "/simulations/{uuid}",
-  "lights": [
-    {
-      "id": 1,
-      "pos": [10.5, 12.5],
-      "color": "GREEN",
-      "orientation": "horizontal"
-    }
-  ],
-  "cars": [
-    {
-      "id": 2,
-      "pos": [5.2, 12.5],
-      "vel": [0.5, 0.0]
-    }
-  ]
-}
-```
-
-#### GET /simulations/:id
-Avanza la simulación un paso y retorna el estado actualizado
-
-**Response:**
-```json
-{
-  "lights": [...],
-  "cars": [...]
-}
-```
-
-### Configuración CORS
-```julia
-Genie.config.cors_headers["Access-Control-Allow-Origin"] = "*"
-Genie.config.cors_headers["Access-Control-Allow-Headers"] = "Content-Type"
-Genie.config.cors_headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-```
-
----
 
 ## Frontend (App.jsx)
 
@@ -516,78 +451,3 @@ const handleStart = () => {
 - Permite analizar patrones de aceleración/frenado
 
 ---
-
-## Monitoreo de Velocidad Promedio
-
-### Objetivo
-Reportar la velocidad promedio de los autos con diferentes configuraciones (3, 5 y 7 autos) para análisis del comportamiento del tráfico.
-
-### Metodología
-
-1. **Configuración**: Establecer número de carros (3, 5 o 7)
-2. **Inicialización**: Click en "Setup" para crear simulación
-3. **Ejecución**: Click en "Start" para iniciar
-4. **Monitoreo**: Observar gráfica en tiempo real
-5. **Registro**: Anotar velocidad promedio estabilizada
-6. **Repetición**: Realizar múltiples pruebas por configuración
-
-### Datos Recolectados
-
-La gráfica muestra:
-- **Eje X**: Pasos de simulación (tiempo discreto)
-- **Eje Y**: Velocidad promedio (0.0 - 1.0)
-- **Línea**: Evolución temporal de la velocidad
-
-### Patrones Esperados
-
-- **Pocos carros (3)**: Velocidad promedio alta, pocas interrupciones
-- **Carros medios (5)**: Velocidad moderada, más interacciones
-- **Muchos carros (7)**: Velocidad baja, congestión frecuente
-
----
-
-## Instalación y Ejecución
-
-### Backend (Julia)
-
-#### Requisitos
-```julia
-julia> using Pkg
-julia> Pkg.add("Agents")
-julia> Pkg.add("Genie")
-julia> Pkg.add("StaticArrays")
-julia> Pkg.add("Distributions")
-```
-
-#### Ejecutar servidor
-```bash
-julia webapi.jl
-```
-El servidor estará disponible en `http://localhost:8000`
-
-### Frontend (React)
-
-#### Requisitos
-```bash
-npm install
-npm install react-plotly.js plotly.js
-```
-
-#### Ejecutar aplicación
-```bash
-npm run dev
-```
-La aplicación estará disponible en `http://localhost:5173` (o puerto asignado por Vite)
-
----
-
-## Características Principales
-
-✅ **Simulación Multi-Agente**: Carros y semáforos interactúan en tiempo real  
-✅ **Sincronización de Semáforos**: Ciclos coordinados para evitar colisiones  
-✅ **Detección de Colisiones**: Los carros frenan ante otros vehículos  
-✅ **Respeto a Señales**: Frenado ante luces rojas y amarillas  
-✅ **Monitoreo en Tiempo Real**: Gráfica de velocidad promedio  
-✅ **Configuración Dinámica**: Número variable de carros (1-10)  
-✅ **Control de Velocidad**: Simulación ajustable (1x-30x)  
-✅ **Visualización SVG**: Representación gráfica de la intersección  
