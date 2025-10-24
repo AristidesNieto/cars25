@@ -52,7 +52,18 @@ export default function App() {
         <button onClick={setup} style={{marginRight: "10px"}}>Setup</button>
         <button onClick={handleStart} style={{marginRight: "10px"}}>Start</button>
         <button onClick={handleStop} style={{marginRight: "10px"}}>Stop</button>
-        
+         
+         <label style={{marginLeft: "20px"}}>
+          Number of cars: 
+          <input 
+            type="number" 
+            value={numCars} 
+            onChange={(e) => setNumCars(parseInt(e.target.value) || 1)}
+            min="1"
+            max="10"
+            style={{marginLeft: "10px", width: "60px"}}
+          />
+        </label>
         
         <label style={{marginLeft: "20px"}}>
           Speed: 
